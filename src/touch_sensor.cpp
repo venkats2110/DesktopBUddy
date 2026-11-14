@@ -7,8 +7,8 @@ namespace {
 // A touch counts when the reading rises this many % above the untouched value,
 // and ends when it falls back below TOUCH_OFF_PCT. Set TOUCH_ON_PCT to about half
 // the rise you see in touch_test for a light touch through the pad's cover.
-constexpr float TOUCH_ON_PCT = 6.0f;
-constexpr float TOUCH_OFF_PCT = 3.5f;
+constexpr float TOUCH_ON_PCT = 10.0f;  // measured 15 Nov: idle <= 2 %, light tap 17-70 %, press 500 %+
+constexpr float TOUCH_OFF_PCT = 5.0f;
 
 constexpr uint32_t SAMPLE_MS = 20;        // 50 readings a second
 constexpr uint32_t TAP_MAX_MS = 300;      // a touch shorter than this is a tap
