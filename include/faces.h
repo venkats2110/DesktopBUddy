@@ -19,40 +19,40 @@ struct Face {
   uint16_t color;                           // RGB565 eye colour, 0 = use EYE_COLOR
 };
 
-constexpr uint16_t EYE_COLOR = 0x5F1B;  // #5FE3D8 in RGB565
+constexpr uint16_t EYE_COLOR = 0x8A5B;  // #8D4BDD in RGB565
 constexpr uint16_t BLUSH_COLOR = 0xFB74;  // #FF6EA0; the face background is black,
                                           // so draw blush as BLUSH_COLOR scaled by blushAlpha
 
 const Face FACES[] = {
   // neutral: Default resting face in Active mode when nothing is happening
-  { "neutral", 62.0f, 78.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, MOUTH_NONE, 0.0f, 30.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "neutral", 70.0f, 85.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, MOUTH_NONE, 0.0f, 30.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
   // happy: Head pat or back stroke; greeted after a while away
-  { "happy", 62.0f, 72.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.45f, 0.0f, 0.0f, 0.0f, MOUTH_CURVE, 0.8f, 34.0f, 0.0f, 0.0f, FX_BLUSH, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "happy", 62.0f, 72.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.45f, 0.0f, 0.0f, 0.0f, MOUTH_CURVE, 0.8f, 34.0f, 0.0f, 0.0f, FX_BLUSH, 0.4f, 10.0f, 10.0f, 0.0f, 0.0f, 0xFBD6 },
   // excited: Picked up gently, Pomodoro break starts, build passed
-  { "excited", 70.0f, 88.0f, 46.0f, -14.0f, 26.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.32f, 0.0f, 0.0f, 0.0f, MOUTH_O, 0.0f, 30.0f, 0.8f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "excited", 75.0f, 100.0f, 46.0f, -14.0f, 26.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.32f, 0.0f, 0.0f, 0.0f, MOUTH_O, 0.0f, 30.0f, 0.75f, 0.0f, 0, 0.75f, 16.0f, 6.0f, 6.0f, 10.0f, 0x7D5F },
   // curious: Front sensor sees something new; you return to the desk
-  { "curious", 62.0f, 78.0f, 46.0f, -14.0f, 22.0f, 0.85f, 1.15f, 0.12f, -6.0f, 0.0f, 0.45f, -0.3f, 0.0f, MOUTH_O, 0.0f, 30.0f, 0.05f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "curious", 64.0f, 78.0f, 46.0f, -14.0f, 22.0f, 0.8f, 1.15f, 0.12f, -6.0f, 0.0f, 0.75f, -0.3f, 0.0f, MOUTH_O, 0.0f, 36.0f, 0.3f, -3.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xE326 },
   // sleepy: About 2 minutes with no interaction; battery under 20%
   { "sleepy", 62.0f, 70.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.55f, -5.0f, 0.0f, 0.0f, 0.3f, 0.0f, MOUTH_NONE, 0.0f, 30.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
   // asleep: Sleep mode: about 3 minutes idle, or a 3 second head press
-  { "asleep", 62.0f, 8.0f, 46.0f, -6.0f, 4.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, MOUTH_NONE, 0.0f, 30.0f, 0.0f, 0.0f, FX_ZZZ, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "asleep", 62.0f, 8.0f, 46.0f, -6.0f, 4.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, MOUTH_NONE, 0.0f, 30.0f, 0.0f, 0.0f, FX_ZZZ, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xEF7D },
   // sad: Ignored for a long time; a game is lost
-  { "sad", 62.0f, 68.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.3f, -18.0f, 0.0f, 0.0f, 0.35f, 0.0f, MOUTH_CURVE, -0.6f, 28.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "sad", 62.0f, 68.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.3f, -18.0f, 0.0f, 0.0f, 0.35f, 0.0f, MOUTH_CURVE, -0.6f, 28.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0x8410 },
   // grumpy: Rapid taps, poked while asleep, or recently handled roughly
-  { "grumpy", 62.0f, 66.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.4f, 22.0f, 0.0f, 0.0f, 0.1f, 0.0f, MOUTH_CURVE, -0.35f, 26.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xFAC9 },
+  { "grumpy", 62.0f, 66.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.4f, 22.0f, 0.0f, 0.0f, 0.1f, 0.0f, MOUTH_CURVE, -0.35f, 26.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xDA49 },
   // surprised: Sudden tap or nudge; hand appears very close in front
-  { "surprised", 58.0f, 100.0f, 46.0f, -14.0f, 29.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.35f, MOUTH_O, 0.0f, 30.0f, 0.7f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "surprised", 70.0f, 100.0f, 46.0f, -14.0f, 29.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.35f, MOUTH_O, 0.0f, 30.0f, 0.65f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xFDA8 },
   // scared: Front wheels reach the table edge
-  { "scared", 50.0f, 92.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.08f, -12.0f, 0.0f, -0.4f, 0.0f, 0.25f, MOUTH_WAVE, 0.0f, 40.0f, 0.0f, 0.0f, FX_SWEAT, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "scared", 50.0f, 92.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.08f, -12.0f, 0.0f, -0.4f, 0.0f, 0.25f, MOUTH_WAVE, 0.0f, 40.0f, 0.0f, 0.0f, FX_SWEAT, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0x435A },
   // dizzy: Shaken
-  { "dizzy", 62.0f, 78.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, MOUTH_WAVE, 0.0f, 36.0f, 0.0f, 0.0f, FX_SPIRAL, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "dizzy", 62.0f, 78.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, MOUTH_WAVE, 0.0f, 36.0f, 0.0f, 0.0f, FX_SPIRAL, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xDA4A },
   // love: Long, gentle petting; you come back after many hours
   { "love", 62.0f, 78.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, MOUTH_CURVE, 0.7f, 30.0f, 0.0f, 0.0f, FX_BLUSH | FX_HEARTS, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
   // bored: Nothing to explore and no interaction for about a minute
-  { "bored", 62.0f, 78.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.45f, 0.0f, 0.0f, -0.6f, 0.2f, 0.0f, MOUTH_CURVE, 0.0f, 26.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "bored", 62.0f, 78.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.45f, 0.0f, 0.0f, -0.6f, 0.2f, 0.0f, MOUTH_CURVE, 0.0f, 26.0f, 0.0f, 0.0f, 0, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xD56D },
   // crying: Build failed; dropped or knocked over
-  { "crying", 62.0f, 66.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.28f, -20.0f, 0.0f, 0.0f, 0.3f, 0.0f, MOUTH_WAVE, 0.0f, 30.0f, 0.0f, 0.0f, FX_TEARS, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "crying", 62.0f, 66.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.28f, -20.0f, 0.0f, 0.0f, 0.3f, 0.0f, MOUTH_WAVE, 0.0f, 30.0f, 0.0f, 0.0f, FX_TEARS, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0xEF7D },
   // charging: Recharge mode: USB power connected
-  { "charging", 62.0f, 60.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, MOUTH_O, 0.0f, 30.0f, 0.4f, 0.0f, FX_BLUSH | FX_MUNCH, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
+  { "charging", 62.0f, 60.0f, 46.0f, -14.0f, 22.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, MOUTH_O, 0.0f, 30.0f, 0.4f, 0.0f, FX_MUNCH, 0.55f, 16.0f, 6.0f, 6.0f, 10.0f, 0 },
 };
 constexpr int FACE_COUNT = sizeof(FACES) / sizeof(FACES[0]);
