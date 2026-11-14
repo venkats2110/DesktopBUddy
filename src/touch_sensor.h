@@ -29,6 +29,9 @@ Gesture update();
 // Re-learn the untouched value (e.g. after moving from USB to battery power).
 void recalibrate();
 
+// Print one line per touch (how long it lasted, its peak and what it counted as).
+void setDebug(bool on);
+
 bool touched();       // true while a finger is on the pad
 uint32_t raw();       // latest smoothed reading
 uint32_t baseline();  // learned untouched value

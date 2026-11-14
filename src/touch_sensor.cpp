@@ -9,6 +9,9 @@ namespace {
 // the rise you see in touch_test for a light touch through the pad's cover.
 constexpr float TOUCH_ON_PCT = 10.0f;  // measured 15 Nov: idle <= 2 %, light tap 17-70 %, press 500 %+
 constexpr float TOUCH_OFF_PCT = 5.0f;
+// A touch also ends when the reading falls to this fraction of its own peak, so a
+// hand hovering just above the pad between taps or strokes doesn't merge them.
+constexpr float RELEASE_FRACTION = 0.25f;
 
 constexpr uint32_t SAMPLE_MS = 20;        // 50 readings a second
 constexpr uint32_t TAP_MAX_MS = 300;      // a touch shorter than this is a tap
@@ -23,8 +26,11 @@ constexpr int PETTING_STROKES = 3;
 
 uint8_t padPin = 0;
 float base = 1;      // untouched value
-float level = 0;     // smoothed reading
+float level = 0;     // latest reading
+float peak = 0;      // highest rise during the current touch
+float valley = 0;    // lowest rise since the last release
 bool isTouched = false;
+bool debugLog = false;
 
 uint32_t lastSample = 0;
 uint32_t pressStart = 0;
@@ -67,6 +73,7 @@ void recalibrate() {
   }
   base = max(1.0f, sum / 25.0f);
   level = base;
+  valley = 0;
   isTouched = false;
   resetSequence();
 }
@@ -81,15 +88,34 @@ Gesture update() {
   if (now - lastSample < SAMPLE_MS) return Gesture::None;
   lastSample = now;
 
-  level += (touchRead(padPin) - level) * 0.5f;  // light smoothing
+  // No smoothing: the readings are steady, and smoothing made quick taps blur together.
+  level = touchRead(padPin);
   float r = rise();
 
   bool wasTouched = isTouched;
-  if (!isTouched && r > TOUCH_ON_PCT) isTouched = true;
-  else if (isTouched && r < TOUCH_OFF_PCT) isTouched = false;
+  if (!isTouched) {
+    // A new touch must rise clearly above the lowest point since the last one
+    // (at least double it, and by TOUCH_ON_PCT), so a hovering hand doesn't count.
+    if (r < valley) valley = r;
+    float floor = max(valley, 0.0f);
+    if (r > floor + max(TOUCH_ON_PCT, floor)) {
+      isTouched = true;
+      peak = r;
+    }
+  } else {
+    if (r > peak) peak = r;
+    if (r < TOUCH_OFF_PCT || r < peak * RELEASE_FRACTION) {
+      isTouched = false;
+      valley = r;
+    }
+  }
 
-  // Follow slow drift (temperature, humidity, USB vs battery) while untouched.
-  if (!isTouched) base += (level - base) * 0.01f;
+  // Follow slow drift (temperature, humidity, USB vs battery) only while the pad is
+  // idle; a hovering hand must not drag the baseline up.
+  if (!isTouched && r < TOUCH_OFF_PCT) {
+    base += (level - base) * 0.01f;
+    if (r < 0) valley = 0;
+  }
 
   Gesture g = Gesture::None;
 
@@ -113,6 +139,13 @@ Gesture update() {
     uint32_t held = now - pressStart;
     lastRelease = now;
     quietMs = STROKE_GAP_MS;
+    if (debugLog) {
+      const char* kind = longPressFired         ? "long press"
+                         : held < TAP_MAX_MS    ? "tap"
+                         : held <= STROKE_MAX_MS ? "stroke"
+                                                 : "ignored (2.5-3 s)";
+      Serial.printf("  touch up: %lu ms, peak %+.0f%% -> %s\n", (unsigned long)held, peak, kind);
+    }
     if (!longPressFired) {
       if (held < TAP_MAX_MS) {
         quietMs = TAP_GAP_MS;
@@ -130,6 +163,8 @@ Gesture update() {
 
   return g;
 }
+
+void setDebug(bool on) { debugLog = on; }
 
 bool touched() { return isTouched; }
 uint32_t raw() { return (uint32_t)level; }

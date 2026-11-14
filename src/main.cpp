@@ -11,7 +11,8 @@
 // Serial Monitor (115200):
 //   a face name (e.g. "grumpy") shows that face for a few seconds
 //   list  - all face names
-//   touch - turn live touch readings on/off (for tuning)
+//   touch - turn touch logging on/off: one line per touch (for tuning)
+//   raw   - turn live touch readings on/off (5 per second)
 //   cal   - re-learn the untouched value of the pad (hands off!)
 
 #include <Arduino.h>
@@ -28,6 +29,7 @@ int neutralFace = 0;
 uint32_t faceUntil = 0;   // when to go back to neutral (0 = stay)
 bool faceHeld = false;    // a reaction face is on screen
 bool showTouch = false;   // print live touch readings
+bool logTouches = false;  // print one line per touch
 
 // Show a face by name and keep it for holdMs, then drift back to neutral.
 void react(const char* faceName, uint32_t holdMs) {
@@ -59,6 +61,10 @@ void handleSerial() {
     if (line == "list") {
       listFaces();
     } else if (line == "touch") {
+      logTouches = !logTouches;
+      touch::setDebug(logTouches);
+      Serial.printf("Touch logging %s\n", logTouches ? "on" : "off");
+    } else if (line == "raw") {
       showTouch = !showTouch;
     } else if (line == "cal") {
       Serial.println("Re-learning the touch pad - hands off...");
@@ -120,7 +126,7 @@ void setup() {
 
   Serial.printf("Deskbot Phase 3: %d faces, head pad on GPIO %d (untouched value %lu).\n",
                 FACE_COUNT, pins::TOUCH_HEAD, (unsigned long)touch::baseline());
-  Serial.println("Type a face name, 'list', 'touch' or 'cal'.");
+  Serial.println("Type a face name, 'list', 'touch', 'raw' or 'cal'.");
 }
 
 void loop() {
